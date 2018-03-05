@@ -5,6 +5,8 @@ import datetime
 import time
 import atexit
 
+FREQUENCY = 300
+
 db = sqlite3.connect("LaptopBatteryCycleCounter.sqlite")
 dbc = db.cursor()
 dbc.execute("""CREATE TABLE IF NOT EXISTS bat
@@ -13,8 +15,8 @@ dbc.execute("""CREATE TABLE IF NOT EXISTS bat
 		capacity UNSIGNED INT NOT NULL,
 		cyclecount UNSIGNED INT NOT NULL,
 		charging UNSIGNED INT NOT NULL,
-		energynow UNSIGNED INT NOT NULL,
-		energyfull UNSIGNED INT NOT NULL
+		energynow UNSIGNED REAL NOT NULL,
+		energyfull UNSIGNED REAL NOT NULL
 	)
 """)
 db.commit()
@@ -39,9 +41,9 @@ def get_charging():
 	#Charging status (True=charging, False=discharging)
 	#TODO more status (charging, charged, discharging)
 	status = get("status", False)
-	if status == "Charging":
-		return True
-	return False
+	if status == "Discharging":
+		return False
+	return True
 
 def get_energynow():
 	#Energy now (Wh)
@@ -78,6 +80,6 @@ if __name__ == "__main__":
 	while True:
 		try:
 			getandsave()
-			time.sleep(60)
+			time.sleep(FREQUENCY)
 		except KeyboardInterrupt:
 			break
