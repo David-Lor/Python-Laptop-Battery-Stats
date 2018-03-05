@@ -37,6 +37,7 @@ def get_cyclecount():
 
 def get_charging():
 	#Charging status (True=charging, False=discharging)
+	#TODO more status (charging, charged, discharging)
 	status = get("status", False)
 	if status == "Charging":
 		return True
