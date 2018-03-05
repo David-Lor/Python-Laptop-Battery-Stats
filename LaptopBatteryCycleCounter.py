@@ -41,7 +41,7 @@ def get_charging():
 	#Charging status (True=charging, False=discharging)
 	#TODO more status (charging, charged, discharging)
 	status = get("status", False)
-	if status == "Discharging":
+	if b"Discharging" in status:
 		return False
 	return True
 
